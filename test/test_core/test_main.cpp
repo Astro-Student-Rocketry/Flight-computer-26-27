@@ -2,7 +2,6 @@
 
 #include "../fakes/FakeBarometer.h"
 #include "../fakes/FakeImu.h"
-#include "../fakes/FakePyro.h"
 #include "../fakes/FakeRadio.h"
 #include "../fakes/FakeStorage.h"
 #include "FlightComputer.h"
@@ -15,13 +14,12 @@ void test_flight_computer_constructs() {
     FakeImu imu;
     FakeStorage storage;
     FakeRadio radio;
-    FakePyro pyro;
-    FlightComputer fc(baro, imu, storage, radio, pyro);
+    FlightComputer fc(baro, imu, storage, radio);
     fc.tick(0.01f);
     TEST_PASS();
 }
 
-// TODO: tester for StateEstimator, detektorene, FlightStateMachine og RecoveryController
+// TODO: tester for StateEstimator, detektorene, og FlightStateMachine
 
 int main() {
     UNITY_BEGIN();
