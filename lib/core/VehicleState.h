@@ -6,4 +6,7 @@ struct VehicleState {
     float altitudeM = 0;
     float velocityMs = 0;
     float accelMs2 = 0;
+    double latDeg = 0;
+    double lonDeg = 0;
+    bool gpsValid = false;
 };

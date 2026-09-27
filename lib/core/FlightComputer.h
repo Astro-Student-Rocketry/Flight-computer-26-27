@@ -3,6 +3,7 @@
 #include "FlightStateMachine.h"
 #include "HealthMonitor.h"
 #include "IBarometer.h"
+#include "IGps.h"
 #include "IImu.h"
 #include "IPressureSensor.h"
 #include "IRadio.h"
@@ -16,7 +17,7 @@
 
 class FlightComputer {
 public:
-    FlightComputer(IBarometer& baro, IImu& imu, IStorage& storage, IRadio& radio,
+    FlightComputer(IBarometer& baro, IImu& imu, IGps& gps, IStorage& storage, IRadio& radio,
                    IPressureSensor& chamberPressure, IPressureSensor& tankPressure,
                    ITemperatureSensor& motorTemp, IValveSensor& valve);
 
@@ -26,6 +27,7 @@ public:
 private:
     IBarometer& baro_;
     IImu& imu_;
+    IGps& gps_;
     IStorage& storage_;
     IRadio& radio_;
 
@@ -37,4 +39,8 @@ private:
     DataLogger logger_;
     TelemetryEncoder encoder_;
     TelemetryLink link_;
+
+    // Brukes til å oppdage faseendringer og nye avvik som skal i hendelsesloggen.
+    Phase lastPhase_ = Phase::Idle;
+    uint16_t lastAnomalies_ = 0;
 };

@@ -2,6 +2,7 @@
 
 #include "Bmp390.h"
 #include "FlightComputer.h"
+#include "GpsReceiver.h"
 #include "PressureTransducer.h"
 #include "Rfm69Link.h"
 #include "SdLogger.h"
@@ -11,6 +12,7 @@
 
 static Bmp390 baro;
 static Vn100 imu;
+static GpsReceiver gps;
 static SdLogger sd;
 static Rfm69Link radio;
 
@@ -20,7 +22,7 @@ static PressureTransducer tankPressure(A1);
 static Thermocouple motorTemp(10);
 static ValveSwitch valve(2);
 
-static FlightComputer fc(baro, imu, sd, radio, chamberPressure, tankPressure, motorTemp, valve);
+static FlightComputer fc(baro, imu, gps, sd, radio, chamberPressure, tankPressure, motorTemp, valve);
 
 void setup() {
     Serial.begin(115200);
