@@ -2,8 +2,9 @@
 
 DataLogger::DataLogger(IStorage& storage) : storage_(storage) {}
 
-void DataLogger::update(const VehicleState& s) {
+void DataLogger::update(const VehicleState& s, const MotorState& m) {
     (void)s;
+    (void)m;
     // TODO
 }
 

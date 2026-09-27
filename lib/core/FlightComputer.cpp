@@ -1,11 +1,14 @@
 #include "FlightComputer.h"
 
-FlightComputer::FlightComputer(IBarometer& baro, IImu& imu, IStorage& storage, IRadio& radio)
+FlightComputer::FlightComputer(IBarometer& baro, IImu& imu, IStorage& storage, IRadio& radio,
+                               IPressureSensor& chamberPressure, IPressureSensor& tankPressure,
+                               ITemperatureSensor& motorTemp, IValveSensor& valve)
     : baro_(baro),
       imu_(imu),
       storage_(storage),
       radio_(radio),
       estimator_(baro, imu),
+      motor_(chamberPressure, tankPressure, motorTemp, valve),
       logger_(storage),
       link_(radio) {}
 
@@ -16,5 +19,5 @@ bool FlightComputer::begin() {
 
 void FlightComputer::tick(float dt) {
     (void)dt;
-    // TODO: health -> estimator -> fsm -> logger -> telemetri
+    // TODO: health -> estimator -> motor -> fsm -> logger -> telemetri
 }

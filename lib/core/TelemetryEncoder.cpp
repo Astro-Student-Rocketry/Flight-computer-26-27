@@ -1,7 +1,8 @@
 #include "TelemetryEncoder.h"
 
-void TelemetryEncoder::update(const VehicleState& s, Phase phase) {
+void TelemetryEncoder::update(const VehicleState& s, const MotorState& m, Phase phase) {
     (void)s;
+    (void)m;
     (void)phase;
     // TODO
 }
