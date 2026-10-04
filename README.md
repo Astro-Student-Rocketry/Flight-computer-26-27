@@ -102,7 +102,9 @@ lib/hal/       grensesnitt mot maskinvare (IBarometer, IImu, IGps, IPressureSens
 lib/core/      all fly-logikk, uten Arduino-kode
 lib/drivers/   drivere for ekte maskinvare (Bmp390, Vn100, GpsReceiver, SdLogger, ...)
 src/main.cpp   kobler driverne inn i FlightComputer
-test/          enhetstester med falsk maskinvare (test/fakes/)
+test/          enhetstester, én test_*-mappe per modul (hver er et eget testprogram)
+test/fakes/    falsk maskinvare og FlightSim
+test/helpers/  felles testhjelpere (SimRig, motorAt, vehicleAt, ramp)
 ```
 
 `core/` avhenger bare av grensesnittene i `hal/`. Derfor kan all logikken testes på PC-en, også med data fra Simulink.
