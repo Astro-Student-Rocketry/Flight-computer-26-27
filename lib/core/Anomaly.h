@@ -9,4 +9,5 @@ enum class Anomaly : uint16_t {
     LandingByTimeout = 1 << 2,  // Descent -> Landed via tidsgrense, ikke detektor
     SensorFault = 1 << 3,
     GpsLost = 1 << 4,
+    BurnoutByTimeout = 1 << 5,  // Boost -> Coast via tidsgrense, verken kammertrykk eller akselerasjon
 };

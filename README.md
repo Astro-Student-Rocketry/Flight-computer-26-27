@@ -32,7 +32,7 @@ stateDiagram-v2
 | Venting → Idle | Tanktrykket er tilbake nær omgivelsestrykk | `VentDetector::isEmpty` |
 | Filled → Liftoff | Akselerasjon over terskel i N prøver på rad | `LiftoffDetector` |
 | Liftoff → Boost | Kort tid etter liftoff (bekrefter liftoff) | Tid i fasen |
-| Boost → Coast | Kammertrykket faller under terskel, eller akselerasjonen blir negativ | `MotorState` / `VehicleState` |
+| Boost → Coast | Kammertrykket faller under terskel, eller akselerasjonen blir negativ, i N prøver på rad | `MotorState` / `VehicleState` |
 | Coast → Descent | Farten er negativ i N prøver og høyden har falt fra toppen | `ApogeeDetector` |
 | Descent → Landed | Farten ≈ 0 og høyden stabil i flere sekunder | `LandingDetector` |
 
@@ -45,6 +45,7 @@ Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motor
 - [ ] `VentDetector::Config::ambientPa` har samme problem som `FillDetector`: fast 101325 Pa. Sett den fra barometeret.
 - [ ] `VentDetector::Config`: lufting er foreløpig definert som minst 5 bar fall med minst 5 bar/s over minst 0,5 s. Tallene er gjettet. Bytt til verdier som passer ventilen og motoren.
 - [ ] `LiftoffDetector::Config`: liftoff er foreløpig over 30 m/s² (ca. 3 g) i 5 prøver på rad. Sjekk mot motorens skyvekraftkurve at terskelen nås raskt, og at 5 prøver passer med tick-frekvensen.
+- [ ] `FlightStateMachine::Config`: tidene er gjettet ut fra `FlightSim` (3 s brenntid). Sett `minBurnS` (tidligste normale burnout), `burnoutTimeoutS`, `apogeeTimeoutS` og `landingTimeoutS` fra Simulink-modellen, med god margin over forventet tid.
 - [ ] Øvrige terskler i `FillDetector::Config` (margin, stabilt bånd, stabil tid) er foreløpige og skal justeres mot motordataene.
 
 ### Sikkerhetsregler
@@ -66,6 +67,7 @@ Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motor
 | `LandingByTimeout` | Descent → Landed skjedde via tidsgrense, ikke `LandingDetector` |
 | `SensorFault` | En sensor ga ugyldige verdier eller svarte ikke |
 | `GpsLost` | Mistet GPS-posisjon under flyturen |
+| `BurnoutByTimeout` | Boost → Coast skjedde via tidsgrense, verken kammertrykk eller akselerasjon viste burnout |
 
 ## Hva som skjer i hver tick
 
