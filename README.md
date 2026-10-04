@@ -38,6 +38,14 @@ stateDiagram-v2
 
 Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motordataene.
 
+**Husk å endre før flyging:**
+
+- [ ] `FillDetector::Config::targetPa` er satt til 45 bar som en antagelse. Bytt til riktig måltrykk for motoren.
+- [ ] `FillDetector::Config::ambientPa` er fast 101325 Pa. Sett den fra barometeret ved oppstart (når `StateEstimator` er på plass), siden omgivelsestrykket varierer med høyde og vær.
+- [ ] `VentDetector::Config::ambientPa` har samme problem som `FillDetector`: fast 101325 Pa. Sett den fra barometeret.
+- [ ] `VentDetector::Config`: lufting er foreløpig definert som minst 5 bar fall med minst 5 bar/s over minst 0,5 s. Tallene er gjettet. Bytt til verdier som passer ventilen og motoren.
+- [ ] Øvrige terskler i `FillDetector::Config` (margin, stabilt bånd, stabil tid) er foreløpige og skal justeres mot motordataene.
+
 ### Sikkerhetsregler
 
 1. **Ingen vei tilbake etter liftoff.** Fra `Liftoff` og framover går fasen bare framover.
