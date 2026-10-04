@@ -1,7 +1,7 @@
 #include "FlightStateMachine.h"
 
 FlightStateMachine::FlightStateMachine(const Config& cfg)
-    : cfg_(cfg), fill_(cfg.fill), vent_(cfg.vent), liftoff_(cfg.liftoff) {}
+    : cfg_(cfg), fill_(cfg.fill), vent_(cfg.vent), liftoff_(cfg.liftoff), apogee_(cfg.apogee) {}
 
 void FlightStateMachine::update(const VehicleState& s, const MotorState& m) {
     const uint32_t now = s.timestampUs;
@@ -99,6 +99,7 @@ void FlightStateMachine::transitionTo(Phase p, uint32_t nowUs) {
     fill_.reset();
     vent_.reset();
     liftoff_.reset();
+    apogee_.reset();
     burnoutCount_ = 0;
 }
 

@@ -20,6 +20,7 @@ public:
         FillDetector::Config fill;
         VentDetector::Config vent;
         LiftoffDetector::Config liftoff;
+        ApogeeDetector::Config apogee;
         float liftoffToBoostS = 0.2f;        // Liftoff -> Boost: så lenge etter bekreftet liftoff
         float burnoutChamberPa = 5.0e5f;     // burnout: kammertrykk under dette...
         float burnoutAccelMs2 = 0.0f;        // ...eller akselerasjon under dette...

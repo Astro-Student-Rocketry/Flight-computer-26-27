@@ -45,6 +45,8 @@ Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motor
 - [ ] `VentDetector::Config::ambientPa` har samme problem som `FillDetector`: fast 101325 Pa. Sett den fra barometeret.
 - [ ] `VentDetector::Config`: lufting er foreløpig definert som minst 5 bar fall med minst 5 bar/s over minst 0,5 s. Tallene er gjettet. Bytt til verdier som passer ventilen og motoren.
 - [ ] `LiftoffDetector::Config`: liftoff er foreløpig over 30 m/s² (ca. 3 g) i 5 prøver på rad. Sjekk mot motorens skyvekraftkurve at terskelen nås raskt, og at 5 prøver passer med tick-frekvensen.
+- [ ] `ApogeeDetector::Config`: apogee er foreløpig negativ fart i 5 prøver og minst 2 m fall fra toppen. Juster `minDropM` etter støyen i høydeestimatet fra `StateEstimator`.
+- [ ] Se over koden i `ApogeeDetector`. Kravene om negativ fart og fall i høyde er bare uavhengige hvis farten fra `StateEstimator` bruker IMU-en, ikke bare den deriverte av baro-høyden. Sjekk også at et trykkhopp i barometeret nær lydhastigheten ikke kan utløse apogee for tidlig.
 - [ ] `FlightStateMachine::Config`: tidene er gjettet ut fra `FlightSim` (3 s brenntid). Sett `minBurnS` (tidligste normale burnout), `burnoutTimeoutS`, `apogeeTimeoutS` og `landingTimeoutS` fra Simulink-modellen, med god margin over forventet tid.
 - [ ] Øvrige terskler i `FillDetector::Config` (margin, stabilt bånd, stabil tid) er foreløpige og skal justeres mot motordataene.
 

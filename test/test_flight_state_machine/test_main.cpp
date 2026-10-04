@@ -82,6 +82,7 @@ void test_fsm_full_flight_goes_through_every_phase_in_order() {
     for (int i = 0; i < 8; i++) TEST_ASSERT_TRUE(seen[i] == expected[i]);
     TEST_ASSERT_FALSE(hasAnomaly(fsm, Anomaly::EarlyBurnout));
     TEST_ASSERT_FALSE(hasAnomaly(fsm, Anomaly::BurnoutByTimeout));
+    TEST_ASSERT_FALSE(hasAnomaly(fsm, Anomaly::ApogeeByTimeout));
 }
 
 void test_fsm_liftoff_ignored_before_filled() {
