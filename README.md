@@ -44,6 +44,7 @@ Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motor
 - [ ] `FillDetector::Config::ambientPa` er fast 101325 Pa. Sett den fra barometeret ved oppstart (når `StateEstimator` er på plass), siden omgivelsestrykket varierer med høyde og vær.
 - [ ] `VentDetector::Config::ambientPa` har samme problem som `FillDetector`: fast 101325 Pa. Sett den fra barometeret.
 - [ ] `VentDetector::Config`: lufting er foreløpig definert som minst 5 bar fall med minst 5 bar/s over minst 0,5 s. Tallene er gjettet. Bytt til verdier som passer ventilen og motoren.
+- [ ] `LiftoffDetector::Config`: liftoff er foreløpig over 30 m/s² (ca. 3 g) i 5 prøver på rad. Sjekk mot motorens skyvekraftkurve at terskelen nås raskt, og at 5 prøver passer med tick-frekvensen.
 - [ ] Øvrige terskler i `FillDetector::Config` (margin, stabilt bånd, stabil tid) er foreløpige og skal justeres mot motordataene.
 
 ### Sikkerhetsregler
