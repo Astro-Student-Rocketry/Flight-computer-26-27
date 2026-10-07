@@ -1,4 +1,4 @@
-Me#pragma once
+#pragma once
 #include "VehicleState.h"
 
 // Oppdager apogee: farten er negativ i flere prøver på rad, og høyden har falt et stykke fra

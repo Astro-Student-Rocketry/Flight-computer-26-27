@@ -48,6 +48,7 @@ Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motor
 - [ ] `ApogeeDetector::Config`: apogee er foreløpig negativ fart i 5 prøver og minst 2 m fall fra toppen. Juster `minDropM` etter støyen i høydeestimatet fra `StateEstimator`.
 - [ ] Se over koden i `ApogeeDetector`. Kravene om negativ fart og fall i høyde er bare uavhengige hvis farten fra `StateEstimator` bruker IMU-en, ikke bare den deriverte av baro-høyden. Sjekk også at et trykkhopp i barometeret nær lydhastigheten ikke kan utløse apogee for tidlig.
 - [ ] `FlightStateMachine::Config`: tidene er gjettet ut fra `FlightSim` (3 s brenntid). Sett `minBurnS` (tidligste normale burnout), `burnoutTimeoutS`, `apogeeTimeoutS` og `landingTimeoutS` fra Simulink-modellen, med god margin over forventet tid.
+- [ ] `tools/telemetry_packet.py` legger motortemperaturen i `engine.tank_temp_c`. Sjekk at termoelementet faktisk sitter på tanken.
 - [ ] Øvrige terskler i `FillDetector::Config` (margin, stabilt bånd, stabil tid) er foreløpige og skal justeres mot motordataene.
 
 ### Sikkerhetsregler
@@ -81,6 +82,23 @@ Tersklene er ikke bestemt ennå. De skal justeres mot Simulink-modellen og motor
 4. `FlightStateMachine` bestemmer fasen og setter eventuelle avvik
 5. `DataLogger` skriver estimater og rådata til SD, og skriver en `Event` ved faseendring, nytt avvik og rampeslutt
 6. `TelemetryEncoder` og `TelemetryLink` sender telemetri med fase, avvik og GPS-posisjon
+
+## Telemetri
+
+Hver pakke er 48 byte, little-endian, uten padding. Layouten står i `lib/core/TelemetryPacket.h`. Bakkestasjonen dekoder med `tools/telemetry_packet.py`, som lager én rad for `telemetry` og én for `engine` i Ground_station_backend. Endres layouten, må `TelemetryPacket::kVersion` økes og Python-filen endres likt. Testene på begge sider sjekker de samme 48 bytene, så de feiler hvis C++ og Python ikke er enige.
+
+Pakken har `seq`, tid, fase, avvik, høyde, fart, akselerasjon, kammer- og tanktrykk, motortemperatur, ventil, GPS-posisjon, GPS-høyde og antall satellitter. Batterispenning er ikke med ennå, fordi ingen kode måler den.
+
+### TODO i bakkestasjonen
+
+Bakkestasjonen ligger i et eget repo (Ground_station_backend). Dette må endres der for at den skal passe med pakken:
+
+- [ ] Ta i bruk `tools/telemetry_packet.py` (eller kopier den) i radiomottakeren som poster til `/sessions/{id}/telemetry` og `engine`.
+- [ ] Legg til kolonnene `anomalies` (int, bitflagg fra `Anomaly.h`) og `gps_satellites` (int) i `TelemetryModel` og `TelemetryBase`. Dekoderen sender dem allerede, men de forsvinner til kolonnene finnes.
+- [ ] `t_ms`: bakkestasjonen regner den som tid relativt til T0, men flygecomputeren sender tid siden oppstart. Bestem hvilken side som regner om. Det kan for eksempel gjøres ved å lagre tidspunktet for liftoff.
+- [ ] `flight_state` er navnet på fasen fra `Phase.h` (`Idle`, `Filling`, `Filled`, `Venting`, `Liftoff`, `Boost`, `Coast`, `Descent`, `Landed`). Sjekk at dashboardet bruker de samme navnene.
+- [ ] `pitch_deg`, `roll_deg`, `yaw_deg`, `pressure_hpa`, `temperature_c` og `battery_v` blir alltid `None`, fordi flygecomputeren ikke sender dem. Fjern dem, eller la dem stå til de blir målt.
+- [ ] `engine.tank_temp_c` får motortemperaturen fra termoelementet. Bytt felt hvis termoelementet ikke sitter på tanken.
 
 ## Krav fra Luftfartstilsynet
 

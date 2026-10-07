@@ -8,5 +8,7 @@ struct VehicleState {
     float accelMs2 = 0;
     double latDeg = 0;
     double lonDeg = 0;
+    float gpsAltitudeM = 0;
+    uint8_t gpsSatellites = 0;
     bool gpsValid = false;
 };
